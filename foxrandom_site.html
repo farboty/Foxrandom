@@ -17,12 +17,13 @@
 
     body {
       background-color: #ff69b4;
-      background-image: url('https://i.imgur.com/Qivk3qE.jpg'); /* sexy pink collage wallpaper */
+      background-image: url('https://cdn.elitebabes.com/content/210784/0005-20_1200.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
       color: #fff;
       min-height: 100vh;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -30,7 +31,7 @@
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       border-radius: 1.5rem;
       padding: 2rem;
       max-width: 520px;
@@ -38,6 +39,7 @@
       box-shadow: 0 0 30px rgba(255, 20, 147, 0.9);
       text-align: center;
       backdrop-filter: blur(12px);
+      z-index: 1;
     }
 
     h1 {
@@ -93,9 +95,61 @@
       font-weight: bold;
       box-shadow: 0 0 12px #ffc0cb;
     }
+
+    .emoji {
+      position: fixed;
+      top: -2rem;
+      font-size: 2rem;
+      animation: fall linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-5vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+    #nsfwModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    #nsfwModal button {
+      margin-top: 1rem;
+      padding: 0.7rem 1.2rem;
+      background: #ff007f;
+      border: none;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+  <div id="nsfwModal">
+    <div>
+      <h2>🔞 Adults Only</h2>
+      <p>This site contains NSFW content. You must be 18+ to enter.</p>
+      <button onclick="document.getElementById('nsfwModal').style.display='none'">I'm 18+, Enter 💋</button>
+    </div>
+  </div>
+
   <div class="container">
     <h1>FoxRandom 💋</h1>
     <img src="" alt="thumbnail" class="thumbnail" id="thumbnail" style="display:none;">
@@ -112,6 +166,16 @@
   </div>
 
   <script>
+    const EMOJIS = ['💋','❤️','💦','🔥','👄','🍑'];
+    for (let i = 0; i < 40; i++) {
+      const emoji = document.createElement('div');
+      emoji.classList.add('emoji');
+      emoji.style.left = Math.random() * 100 + 'vw';
+      emoji.style.animationDuration = (4 + Math.random() * 4) + 's';
+      emoji.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+      document.body.appendChild(emoji);
+    }
+
     async function getRandomVideo() {
       try {
         const res = await fetch("https://api.npoint.io/b7b097de568a025805ef");
