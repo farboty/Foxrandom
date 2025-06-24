@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoxRandom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #ff69b4;
+      background-image: url('https://i.imgur.com/Qivk3qE.jpg'); /* sexy pink collage wallpaper */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 0 30px rgba(255, 20, 147, 0.9);
+      text-align: center;
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #ff69b4;
+      text-shadow: 0 0 15px #ff007f;
+    }
+
+    .thumbnail {
+      width: 100%;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      border: 3px solid #ff1493;
+      box-shadow: 0 0 15px #ff69b4;
+    }
+
+    .info {
+      margin-bottom: 1.5rem;
+    }
+
+    .info p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      color: #ffe0f0;
+    }
+
+    .button {
+      padding: 1rem 1.7rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .button:hover {
+      transform: scale(1.08);
+      filter: brightness(1.1);
+    }
+
+    .button.random {
+      background: linear-gradient(135deg, #ff1493, #ff69b4);
+      color: #fff;
+      box-shadow: 0 0 15px #ff69b4;
+    }
+
+    .button.watch {
+      background: linear-gradient(135deg, #ffffff, #ffe4f0);
+      color: #ff007f;
+      font-weight: bold;
+      box-shadow: 0 0 12px #ffc0cb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FoxRandom 💋</h1>
+    <img src="" alt="thumbnail" class="thumbnail" id="thumbnail" style="display:none;">
+    <div class="info" id="info" style="display:none;">
+      <p><strong>🔥 Tag:</strong> <span id="tag"></span></p>
+      <p><strong>📄 Page:</strong> <span id="page"></span></p>
+      <p><strong>🎯 Index:</strong> <span id="videoIndex"></span></p>
+      <p><strong>⏱ Duration:</strong> <span id="duration"></span></p>
+    </div>
+    <button class="button random" onclick="getRandomVideo()">Give Me Pleasure 💦</button>
+    <a id="watchLink" href="#" target="_blank" style="text-decoration: none;">
+      <button class="button watch" style="display:none;">Watch Now 🫦</button>
+    </a>
+  </div>
+
+  <script>
+    async function getRandomVideo() {
+      try {
+        const res = await fetch("https://api.npoint.io/b7b097de568a025805ef");
+        const videos = await res.json();
+
+        if (!Array.isArray(videos) || videos.length === 0) throw new Error("Invalid video data");
+
+        const random = videos[Math.floor(Math.random() * videos.length)];
+
+        document.getElementById("tag").textContent = random.tag;
+        document.getElementById("page").textContent = random.page;
+        document.getElementById("videoIndex").textContent = random.videoIndexOnPage;
+        document.getElementById("duration").textContent = random.duration;
+
+        const thumbnail = document.getElementById("thumbnail");
+        thumbnail.src = random.thumbnail;
+        thumbnail.style.display = "block";
+
+        document.getElementById("info").style.display = "block";
+
+        const watchButton = document.querySelector(".button.watch");
+        const watchLink = document.getElementById("watchLink");
+        watchLink.href = random.link;
+        watchButton.style.display = "inline-block";
+      } catch (err) {
+        alert("Failed to load video. Please try again later.");
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
